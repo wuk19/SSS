@@ -1,0 +1,83 @@
+---
+title: "SSS data"
+output: github_document
+---
+
+# set working directory
+
+```{r}
+library(ggplot2)
+library(dbplyr)
+library(psych)
+```
+
+
+#read in the data
+```{r}
+library(readxl)
+survey <- read_excel("data.xlsx")
+View(survey)
+```
+
+###1. emotion
+```{r}
+# positive emotion
+survey$positive_emotion <- rowMeans(survey[,c("Q153_1","Q153_4","Q153_6","Q145_2","Q145_3","Q145_4","Q145_5","Q145_6","Q145_7","Q146_6")], na.rm = TRUE)
+
+# negative emotion
+survey$negative_emotion <- rowMeans(survey[,c("Q153_2","Q153_3","Q153_5","Q153_7","Q145_1","Q146_1","Q146_2","Q146_3","Q146_4","Q146_5")],na.rm = TRUE)
+
+# test internal reliability
+alpha(survey[,c("Q153_1","Q153_4","Q153_6","Q145_2","Q145_3","Q145_4","Q145_5","Q145_6","Q145_7","Q146_6","Q153_2","Q153_3","Q153_5","Q153_7","Q145_1","Q146_1","Q146_2","Q146_3","Q146_4","Q146_5")])
+```
+
+###2. HEALTH PERCEPTION
+```{r}
+# current health
+survey$current_health <- rowMeans(survey[,c("Q67_1","Q67_2","Q67_3","Q67_4","Q67_5","Q67_6")], na.rm = TRUE)
+
+# future health
+survey$future_health <- rowMeans(survey[,c("Q123_1","Q123_2","Q123_3","Q123_4")], na.rm = TRUE)
+
+# test internal reliability
+alpha(survey[,c("Q67_1","Q67_2","Q67_3","Q67_4","Q67_5","Q67_6","Q123_1","Q123_2","Q123_3","Q123_4")])
+```
+
+###3. HAPPINESS
+```{r}
+# reverse coding
+survey$happiness1_reverse <- 8 - survey$Q177
+survey$happiness2_reverse <- 8 - survey$Q102
+# happiness wake
+survey$happiness_wake <- rowMeans(survey[,c("Q174","Q175","Q176","happiness1_reverse")], na.rm = TRUE)
+# happiness general
+survey$happiness_general <- rowMeans(survey[,c("Q96","Q98","Q100","happiness2_reverse")], na.rm = TRUE)
+```
+
+###4. EXERCISE INTENT
+```{r}
+survey$exercise_intent <- rowMeans(survey[,c("Q124_1","Q124_2","Q124_3","Q124_4","Q124_5","Q124_6","Q124_7","Q124_8","Q124_9","Q124_11","Q124_12","Q124_13","Q124_14","Q124_15","Q124_17","Q124_18")],na.rm = TRUE)
+```
+
+###5. EMPATHY
+```{r}
+# reverse coding
+survey$EC2_reverse <- 6 - survey$Q102_2
+survey$EC4_reverse <- 6 - survey$Q102_4
+survey$EC5_reverse <- 6 - survey$Q102_5
+survey$PT1_reverse <- 6 - survey$Q103_1
+survey$PT4_reverse <- 6 - survey$Q103_4
+# Empathetic concern
+survey$empathetic_concern <- rowMeans(survey[,c("Q102_1","EC2_reverse","Q102_3","EC4_reverse","EC5_reverse","Q102_6","Q102_7")], na.rm = TRUE)
+# Perspective taking
+survey$perspective_taking <- rowMeans(survey[,c("PT1_reverse","Q103_2","Q103_3","Q103_5","Q103_6","Q103_7","PT4_reverse")], na.rm = TRUE)
+```
+
+### Create new data frame
+```{r}
+library(dplyr)
+thesis <- survey %>%
+  select(id,condition,national_sss,procedure,manipulation_check,Q142,positive_emotion,negative_emotion,current_health,future_health,happiness_wake,happiness_general,exercise_intent,empathetic_concern,perspective_taking,Q128,Q130,Q132,Q134)
+write.csv(survey, "survey.csv")
+write.csv(thesis,"thesis.csv")
+```
