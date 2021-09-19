@@ -1,0 +1,182 @@
+---
+title: "basic analysis"
+output: github_document
+---
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(psych)
+```
+
+# import the data
+```{r}
+library(readr)
+thesis <- read_csv("thesis.csv")
+View(thesis)
+```
+
+# rename variables
+```{r}
+thesis <- thesis %>%
+  rename(exercise_frequency = Q142, 
+         birthdate = Q128,
+         gender = Q130,
+         ethinicity = Q132,
+         SES = Q134)
+```
+
+###1. Manipulation
+
+```{r}
+#participant number in each condition
+table(thesis$condition)
+#there are 144 people in the high sss condition and the rest of 141 in the low sss condition.
+```
+
+```{r}
+#manipulation check
+table(thesis$condition,thesis$manipulation_check)
+"1 = high, 2 = middle, 3 = low"
+"in the high sss condition, 9 of them chose 'middle' and one chose 'low'. 
+in the low sss condition, 9 of them people chose 'high' and 10 people chose 'middle'.
+Maybe people chose 'middle' because it kind of reflected their current status?"
+```
+
+###2. National SSS
+
+```{r}
+summary(thesis)
+ggplot(thesis, aes(x = national_sss)) +
+      geom_histogram(binwidth = 0.5) +
+      facet_grid(.~condition)
+```
+
+###3. Emotion
+
+```{r}
+ggplot(thesis, aes(x = condition, y = positive_emotion, fill = condition)) +
+    geom_boxplot() +
+    geom_jitter(shape = 15,
+        color = "steelblue",
+        position = position_jitter(0.21)) +
+    theme_classic()
+```
+
+```{r}
+ggplot(thesis, aes(x = condition, y = negative_emotion, fill = condition)) +
+    geom_boxplot() +
+    geom_jitter(shape = 15,
+        color = "steelblue",
+        position = position_jitter(0.21)) +
+    theme_classic()
+```
+
+```{r}
+#within high condition, whether positive emotion is significantly higher than negative emotion.
+```
+
+###4. Health
+
+```{r}
+ggplot(thesis, aes(x = condition, y = current_health, fill = condition)) +
+    geom_boxplot() +
+    geom_jitter(shape = 15,
+        color = "steelblue",
+        position = position_jitter(0.21)) +
+    theme_classic()
+```
+
+```{r}
+ggplot(thesis, aes(x = condition, y = future_health, fill = condition)) +
+    geom_boxplot() +
+    geom_jitter(shape = 15,
+        color = "steelblue",
+        position = position_jitter(0.21)) +
+    theme_classic()
+```
+
+###5. Happiness
+
+```{r}
+ggplot(thesis, aes(x = condition, y = happiness_wake, fill = condition)) +
+    geom_boxplot() +
+    geom_jitter(shape = 15,
+        color = "steelblue",
+        position = position_jitter(0.21)) +
+    theme_classic()
+```
+
+```{r}
+ggplot(thesis, aes(x = condition, y = happiness_general, fill = condition)) +
+    geom_boxplot() +
+    geom_jitter(shape = 15,
+        color = "steelblue",
+        position = position_jitter(0.21)) +
+    theme_classic()
+```
+
+###6. Exercise
+
+```{r}
+ggplot(thesis, aes(x = condition, y = exercise_intent, fill = condition)) +
+    geom_boxplot() +
+    geom_jitter(shape = 15,
+        color = "steelblue",
+        position = position_jitter(0.21)) +
+    theme_classic()
+```
+###7. Empathy
+
+```{r}
+ggplot(thesis, aes(x = condition, y = empathetic_concern, fill = condition)) +
+    geom_boxplot() +
+    geom_jitter(shape = 15,
+        color = "steelblue",
+        position = position_jitter(0.21)) +
+    theme_classic()
+```
+
+```{r}
+ggplot(thesis, aes(x = condition, y = perspective_taking, fill = condition)) +
+    geom_boxplot() +
+    geom_jitter(shape = 15,
+        color = "steelblue",
+        position = position_jitter(0.21)) +
+    theme_classic()
+```
+
+###8. Ethnicity
+
+```{r}
+thesis %>%
+  mutate(race = recode(ethinicity,
+                        "41" = "American Indian/Alaskan Native",
+                        "11" = "East Asian" ,
+                        "12" = "Southeast Asian",
+                        "13" = "South Asian",
+                        "19" = "Other Asian",
+                        "31" = "Mexican American/Chicano",
+                        "32" = "Puerto Rican",
+                        "33" = "Central American",
+                        "39" = "Other Hispanic or Latino",
+                        "21" = "African American/Black",
+                        "22" = "African",
+                        "23" = "Caribbean",
+                        "29" = "Other Black",
+                        "51" = "European/European American",
+                        "52" = "Middle Eastern/Middle Eastern American",
+                        "59" = "Other White",
+                        "42" = "Native Hawaiian or Other pacific Islander",
+                        "89" = "Other",
+                        "99" = "Not Specified"
+                       ))
+```
+
+###9. Age
+
+```{r}
+thesis$age <- 2021 - thesis$birthdate
+```
+
