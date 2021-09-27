@@ -48,8 +48,9 @@ Maybe people chose 'middle' because it kind of reflected their current status?"
 
 ```{r}
 summary(thesis)
+table(thesis$national_sss)
 ggplot(thesis, aes(x = national_sss)) +
-      geom_histogram(binwidth = 0.5) +
+      geom_histogram(binwidth = 1) +
       facet_grid(.~condition)
 ```
 

@@ -11,7 +11,6 @@ library(dbplyr)
 library(psych)
 ```
 
-
 #read in the data
 ```{r}
 library(readxl)
@@ -40,7 +39,7 @@ survey$current_health <- rowMeans(survey[,c("Q67_1","Q67_2","Q67_3","Q67_4","Q67
 survey$future_health <- rowMeans(survey[,c("Q123_1","Q123_2","Q123_3","Q123_4")], na.rm = TRUE)
 
 # test internal reliability
-alpha(survey[,c("Q67_1","Q67_2","Q67_3","Q67_4","Q67_5","Q67_6","Q123_1","Q123_2","Q123_3","Q123_4")])
+alpha(survey[,c("Q67_1","Q67_2","Q67_3","Q67_4","Q67_5","Q67_6","Q123_1","Q123_2","Q123_3","Q123_4")],check.keys=TRUE)
 ```
 
 ###3. HAPPINESS
@@ -52,11 +51,15 @@ survey$happiness2_reverse <- 8 - survey$Q102
 survey$happiness_wake <- rowMeans(survey[,c("Q174","Q175","Q176","happiness1_reverse")], na.rm = TRUE)
 # happiness general
 survey$happiness_general <- rowMeans(survey[,c("Q96","Q98","Q100","happiness2_reverse")], na.rm = TRUE)
+
+alpha(survey[,c("Q174","Q175","Q176","happiness1_reverse","Q96","Q98","Q100","happiness2_reverse")])
 ```
 
 ###4. EXERCISE INTENT
 ```{r}
 survey$exercise_intent <- rowMeans(survey[,c("Q124_1","Q124_2","Q124_3","Q124_4","Q124_5","Q124_6","Q124_7","Q124_8","Q124_9","Q124_11","Q124_12","Q124_13","Q124_14","Q124_15","Q124_17","Q124_18")],na.rm = TRUE)
+
+alpha(survey[,c("Q124_1","Q124_2","Q124_3","Q124_4","Q124_5","Q124_6","Q124_7","Q124_8","Q124_9","Q124_11","Q124_12","Q124_13","Q124_14","Q124_15","Q124_17","Q124_18")])
 ```
 
 ###5. EMPATHY
@@ -71,6 +74,8 @@ survey$PT4_reverse <- 6 - survey$Q103_4
 survey$empathetic_concern <- rowMeans(survey[,c("Q102_1","EC2_reverse","Q102_3","EC4_reverse","EC5_reverse","Q102_6","Q102_7")], na.rm = TRUE)
 # Perspective taking
 survey$perspective_taking <- rowMeans(survey[,c("PT1_reverse","Q103_2","Q103_3","Q103_5","Q103_6","Q103_7","PT4_reverse")], na.rm = TRUE)
+
+alpha(survey[,c("Q102_1","EC2_reverse","Q102_3","EC4_reverse","EC5_reverse","Q102_6","Q102_7","PT1_reverse","Q103_2","Q103_3","Q103_5","Q103_6","Q103_7","PT4_reverse")])
 ```
 
 ### Create new data frame

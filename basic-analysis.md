@@ -164,8 +164,16 @@ summary(thesis)
     ##  NA's   :9                                         NA's   :1
 
 ``` r
+table(thesis$national_sss)
+```
+
+    ## 
+    ##  1  3  4  5  6  7  8  9 10 
+    ##  1  2 21 16 42 79 72 42 10
+
+``` r
 ggplot(thesis, aes(x = national_sss)) +
-      geom_histogram(binwidth = 0.5) +
+      geom_histogram(binwidth = 1) +
       facet_grid(.~condition)
 ```
 
