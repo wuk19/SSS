@@ -1,0 +1,145 @@
+---
+title: "primary analysis"
+output: github_document
+---
+
+```{r}
+library(readr)
+thesis <- read_csv("thesis.csv")
+View(thesis)
+```
+
+```{r}
+library(psych)
+library(sjPlot)
+library(tidyverse)
+```
+
+```{r}
+thesis <- thesis %>%
+  rename(exercise_frequency = Q142, 
+         birthdate = Q128,
+         gender = Q130,
+         ethinicity = Q132,
+         SES = Q134)
+thesis$age <- 2021 - thesis$birthdate
+```
+
+###correlation matrix
+
+```{r}
+#drop non-numeric variables
+thesis$X1 <- NULL
+thesis$id <- NULL
+thesis$manipulation_check <- NULL
+thesis$procedure <- NULL
+thesis$birthdate <- NULL
+thesis$ethinicity <- NULL
+```
+
+```{r}
+#recode condition, high_sss = 1, low_sss = 0
+thesis$condition[thesis$condition == "high_sss"] <- 1
+thesis$condition[thesis$condition == "low_sss"] <- 0
+#set the condition variable to type numeric
+thesis$condition <- as.numeric(thesis$condition)
+thesis$gender <- as.numeric(thesis$gender)
+str(thesis)
+```
+
+```{r}
+#correlation matrix
+tab_corr(thesis[,2:15],
+         triangle = "lower",
+         file = "correlation_matrix.doc")
+```
+
+### T test
+
+```{r}
+#H0: mean positive emotion of high_sss = mean positive emotion of low_sss
+t.test(positive_emotion~condition, var.equal=TRUE, data=thesis)
+#negative emotion
+t.test(negative_emotion~condition, var.equal=TRUE, data=thesis)
+```
+
+```{r}
+#current_health
+t.test(current_health~condition, var.equal=TRUE, data=thesis)
+#future health
+t.test(future_health~condition, var.equal=TRUE, data=thesis)
+```
+
+```{r}
+#happiness_wake
+t.test(happiness_wake~condition, var.equal=TRUE, data=thesis)
+#happiness_general
+t.test(happiness_general~condition, var.equal=TRUE, data=thesis)
+```
+
+```{r}
+#exercise
+t.test(exercise_intent~condition, var.equal=TRUE, data=thesis)
+t.test(exercise_frequency~condition, var.equal=TRUE, data=thesis)
+```
+
+```{r}
+#empathetic_concern
+t.test(empathetic_concern~condition, var.equal=TRUE, data=thesis)
+t.test(perspective_taking~condition, var.equal=TRUE, data=thesis)
+```
+
+### one way ANCOVA
+
+```{r}
+anova_positive_emotion <- aov(positive_emotion~condition+national_sss,data = thesis)
+summary(anova_positive_emotion)
+```
+
+
+```{r}
+anova_negative_emotion <- aov(negative_emotion~condition+national_sss,data = thesis)
+summary(anova_negative_emotion)
+```
+
+```{r}
+anova_current_health <- aov(current_health~condition+national_sss,data = thesis)
+summary(anova_current_health)
+```
+
+```{r}
+anova_future_health <- aov(future_health~condition+national_sss,data = thesis)
+summary(anova_future_health)
+```
+
+```{r}
+anova_happiness_wake <- aov(happiness_wake~condition+national_sss,data = thesis)
+summary(anova_happiness_wake)
+```
+
+```{r}
+anova_happiness_general <- aov(happiness_general~condition+national_sss,data = thesis)
+summary(anova_happiness_general)
+```
+
+```{r}
+anova_exercise_intent <- aov(exercise_intent~condition+national_sss,data = thesis)
+summary(anova_exercise_intent)
+```
+
+```{r}
+anova_perspective_taking <- aov(perspective_taking~condition+national_sss,data = thesis)
+summary(anova_perspective_taking)
+```
+
+```{r}
+anova_empathetic_concern <- aov(empathetic_concern~condition+national_sss,data = thesis)
+summary(anova_empathetic_concern)
+```
+
+### linear regression
+
+```{r}
+regression_ <- lm(data=thesis, )
+```
+

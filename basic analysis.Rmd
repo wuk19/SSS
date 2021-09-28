@@ -148,36 +148,10 @@ ggplot(thesis, aes(x = condition, y = perspective_taking, fill = condition)) +
     theme_classic()
 ```
 
-###8. Ethnicity
-
-```{r}
-thesis %>%
-  mutate(race = recode(ethinicity,
-                        "41" = "American Indian/Alaskan Native",
-                        "11" = "East Asian" ,
-                        "12" = "Southeast Asian",
-                        "13" = "South Asian",
-                        "19" = "Other Asian",
-                        "31" = "Mexican American/Chicano",
-                        "32" = "Puerto Rican",
-                        "33" = "Central American",
-                        "39" = "Other Hispanic or Latino",
-                        "21" = "African American/Black",
-                        "22" = "African",
-                        "23" = "Caribbean",
-                        "29" = "Other Black",
-                        "51" = "European/European American",
-                        "52" = "Middle Eastern/Middle Eastern American",
-                        "59" = "Other White",
-                        "42" = "Native Hawaiian or Other pacific Islander",
-                        "89" = "Other",
-                        "99" = "Not Specified"
-                       ))
-```
-
 ###9. Age
 
 ```{r}
 thesis$age <- 2021 - thesis$birthdate
 ```
+
 

@@ -32,14 +32,20 @@ alpha(survey[,c("Q153_1","Q153_4","Q153_6","Q145_2","Q145_3","Q145_4","Q145_5","
 
 ###2. HEALTH PERCEPTION
 ```{r}
+#reverse coding
+survey$CH1_reverse <- 6 - survey$Q67_2
+survey$CH2_reverse <- 6 - survey$Q67_3
+survey$CH3_reverse <- 6 - survey$Q67_6
+survey$FH1_reverse <- 6 - survey$Q123_1
+survey$FH2_reverse <- 6 - survey$Q123_4
 # current health
-survey$current_health <- rowMeans(survey[,c("Q67_1","Q67_2","Q67_3","Q67_4","Q67_5","Q67_6")], na.rm = TRUE)
+survey$current_health <- rowMeans(survey[,c("Q67_1","CH1_reverse","CH2_reverse","Q67_4","Q67_5","CH3_reverse")], na.rm = TRUE)
 
 # future health
-survey$future_health <- rowMeans(survey[,c("Q123_1","Q123_2","Q123_3","Q123_4")], na.rm = TRUE)
+survey$future_health <- rowMeans(survey[,c("FH1_reverse","Q123_2","Q123_3","FH2_reverse")], na.rm = TRUE)
 
 # test internal reliability
-alpha(survey[,c("Q67_1","Q67_2","Q67_3","Q67_4","Q67_5","Q67_6","Q123_1","Q123_2","Q123_3","Q123_4")],check.keys=TRUE)
+alpha(survey[,c("Q67_1","CH1_reverse","CH2_reverse","Q67_4","Q67_5","CH3_reverse","FH1_reverse","Q123_2","Q123_3","FH2_reverse")],check.keys=TRUE)
 ```
 
 ###3. HAPPINESS
